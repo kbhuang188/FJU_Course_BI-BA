@@ -1,0 +1,59 @@
+---
+title: '1204'
+output:
+  word_document: default
+  html_document: default
+date: "2023-12-04"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+```{python}
+import seaborn as sns
+import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
+from sklearn.experimental import enable_iterative_imputer
+from sklearn.impute import IterativeImputer
+from sklearn.impute import SimpleImputer
+from sklearn.metrics import ConfusionMatrixDisplay 
+```
+
+```{python echo=FALSE}
+df =sns.load_dataset('titanic')
+#df.head()
+df.isnull().sum()
+df.age.fillna(df.age.median(), inplace=True)
+imp = SimpleImputer(missing_values=np.nan, strategy='median')
+TEST = imp.fit_transform(df.age.values.reshape(-1,1))
+```
+```{python}
+imp = IterativeImputer(max_iter=10, random_state=0)
+imp.fit([[1,2],[3,6],[4,8],[np.nan,3],[7,np.nan]])
+X_test = [[np.nan,2],[6,np.nan],[np.nan,6]]
+```
+
+```{python}
+df.embark_town.fillna(method='ffill', inplace=True)
+df.loc[[61,829]]
+```
+```{python}
+
+plt.boxplot(df.age);
+plt.show()
+plt.close()
+```
+```{python}
+ds = datasets.load_iris()
+y=ds.target
+
+
+disp = ConfusionMatrixDisplay(confusion_matrix=confusion_matrix(y_test, y_pred), display_labels=ds.target_names)
+disp.plot()
+plt.show()
+```
+
